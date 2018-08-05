@@ -1,4 +1,4 @@
-# JsonSocket [![Build Status](https://secure.travis-ci.org/foi/node-json-socket.png?branch=master)](https://travis-ci.org/foi/node-json-socket)
+# JsonSocket [![Build Status](https://travis-ci.org/foi/node-json-socket.svg?branch=master)](https://travis-ci.org/foi/node-json-socket)
 
 Developed by @sebastianseilund but forked because unicode patch by @hpalz is not accepted. This repo includes unicode patch.
 
