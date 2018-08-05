@@ -104,6 +104,26 @@ describe('JsonSocket message parsing', function() {
         assert.equal(socket._buffer, '');
     });
 
+    it('should format message with string length', function () {
+        var message = socket._formatMessageData("Please take out the søppel");
+        var i = message.indexOf('#');
+        var rawContentLength = message.substring(0, i);
+        var contentLength = parseInt(rawContentLength);
+        assert.equal(contentLength, 28);
+        socket._handleData(message);
+        assert.equal(messages[0], 'Please take out the søppel');
+        assert.equal(socket._buffer, '');
+    });
+    it('should parse multiple messages (with IC) in one packet', function () {
+        var message = socket._formatMessageData("søppel");
+        message += socket._formatMessageData("rubbish");
+        socket._handleData(message);
+        assert.equal(messages.length, 2);
+        assert.equal(messages[0], 'søppel');
+        assert.equal(messages[1], 'rubbish');
+        assert.equal(socket._buffer, '');
+    });
+
 });
 
 describe('JsonSocket message parsing with custom delimeter', function() {
@@ -214,5 +234,23 @@ describe('JsonSocket message parsing with custom delimeter', function() {
         assert.equal(messages.length, 0);
         assert.equal(socket._buffer, '');
     });
-
+    it('should format message with string length', function () {
+        var message = socket._formatMessageData("Please take out the søppel");
+        var i = message.indexOf(socket._opts.delimeter);
+        var rawContentLength = message.substring(0, i);
+        var contentLength = parseInt(rawContentLength);
+        assert.equal(contentLength, 28);
+        socket._handleData(message);
+        assert.equal(messages[0], 'Please take out the søppel');
+        assert.equal(socket._buffer, '');
+    });
+    it('should parse multiple messages (with IC) in one packet', function () {
+        var message = socket._formatMessageData("søppel");
+        message += socket._formatMessageData("rubbish");
+        socket._handleData(message);
+        assert.equal(messages.length, 2);
+        assert.equal(messages[0], 'søppel');
+        assert.equal(messages[1], 'rubbish');
+        assert.equal(socket._buffer, '');
+    });
 });

@@ -1,4 +1,6 @@
-# JsonSocket [![Build Status](https://secure.travis-ci.org/sebastianseilund/node-json-socket.png?branch=master)](https://travis-ci.org/sebastianseilund/node-json-socket)
+# JsonSocket [![Build Status](https://secure.travis-ci.org/foi/node-json-socket.png?branch=master)](https://travis-ci.org/foi/node-json-socket)
+
+Developed by @sebastianseilund but forked because unicode patch by @hpalz is not accepted. This repo includes unicode patch.
 
 `JsonSocket` is a very easy way to send JSON over a socket using either TCP or UNIX sockets. `JsonSocket` uses a [decorator pattern](http://en.wikipedia.org/wiki/Decorator_pattern)
 to expose extra methods and events on instances of [`net.Socket`](http://nodejs.org/api/net.html#net_class_net_socket).
@@ -7,19 +9,13 @@ These methods and events makes it straightforward to send bidirectional JSON mes
 
 ## Installation
 
-You can install `JsonSocket` using Node Package Manager (npm): 
-
-```
-npm install json-socket
-```
-
-Or add it to your `package.json` file, like this:
+Add it to your `package.json` file, like this:
 
 ```json
 {
     ...
     "dependencies": {
-        "json-socket": "*"
+        "json-socket": "foi/node-json-socket"
     }
     ...
 }
@@ -249,7 +245,7 @@ __Arguments__
 
 ### socket.sendEndMessage(message, callback)
 
-Same as `socket.sendMessage`, except that the socket is closed right after the message has been sent using 
+Same as `socket.sendMessage`, except that the socket is closed right after the message has been sent using
 [`net.end()`](http://nodejs.org/api/net.html#net_socket_end_data_encoding).
 
 No more messages can be sent from either the server or client through this socket.
@@ -258,7 +254,7 @@ No more messages can be sent from either the server or client through this socke
 
 ### socket.sendError(err, callback)
 
-Convenience method for sending an error as a message. 
+Convenience method for sending an error as a message.
 
 __Arguments__
 
@@ -284,7 +280,7 @@ Will send a message of this JSON format:
 
 ### socket.sendEndError(err, callback)
 
-Same as `socket.sendError`, except that the socket is closed right after the message has been sent using 
+Same as `socket.sendError`, except that the socket is closed right after the message has been sent using
 [`net.end()`](http://nodejs.org/api/net.html#net_socket_end_data_encoding).
 
 No more messages can be sent from either the server or client through this socket.
@@ -308,6 +304,8 @@ Emitted when a complete message has been received.
 
 The `JsonSocket` protocol works by `JSON.stringify`'ing the message and prefixing it with a content length and a content length delimiter (#).
 
+You can change the content length delimiter to custom: `new JsonSocket(new net.Socket(), { delimeter:  "$"})`.
+
 Example:
 
 ```javascript
@@ -328,10 +326,3 @@ This mechanism ensures that messages that are chunked will be parsed correctly.
 ##Todo
 
 - `socket.request()` method, and `request` event. Makes it easier to send multiple requests with callbacks.
-
-
-
-
-
-
-
