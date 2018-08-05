@@ -232,6 +232,33 @@ __Arguments__
 
 ---------------------------------------
 
+### JsonSocket.sendReceive(options)
+
+Sends a JSON message over the socket and returns Promise.
+
+__Options__
+
+- port - Port to send the message to (ignored if unixSocket).
+- most - Host to send the message to (ignored if unixSocket).
+- message - The message to send.
+- unixSocket - unix socket destination (ignored if host & port).
+- timeout - default is undefined.
+- delimeter - default is "#".
+
+Example Usage
+
+```js
+JsonSocket.sendReceive({host: 'localhost', port: 3333, timeout: 5000, delimeter: "¡", message: "test"})
+.then(function(message) {
+    console.log(message);
+})
+.catch(function(err){
+    console.error(err)
+})
+```
+
+---------------------------------------
+
 ### socket.sendMessage(message, callback)
 
 Sends a JSON a message over the socket.

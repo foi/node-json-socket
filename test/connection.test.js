@@ -255,32 +255,44 @@ describe('JsonSocket connection', function() {
         });
     });
 
-//    it('should buffer message if sent before connected', function(callback) {
-//        helpers.createServer(function(err, server) {
-//            if (err) return callback(err);
-//            var clientSocket = new JsonSocket(new net.Socket());
-//            clientSocket.connect(server.address().port, '127.0.0.1');
-//            clientSocket.on('error', function(err) {
-//                callback(err);
-//            });
-//            async.parallel([
-//                function(callback) {
-//                    clientSocket.sendMessage({type: 'ping'}, callback);
-//                },
-//                function(callback) {
-//                    server.on('connection', function(socket) {
-//                        var serverSocket = new JsonSocket(socket);
-//                        serverSocket.on('message', function(message) {
-//                            assert.deepEqual(message, {type: 'ping'});
-//                            callback();
-//                        });
-//                    });
-//                }
-//            ], function(err) {
-//                if (err) return callback(err);
-//                helpers.closeServer(server, callback);
-//            });
-//        });
-//    });
+    it('should send and receive message sendReceive is object with custom delimeter', function (done) {
+      var server = net.createServer();
+      server.listen();
+      server.on('listening', function() {
+          server.on('connection', function(socket) {
+              var serverSocket = new JsonSocket(socket, { delimeter: "¡"});
+              serverSocket.on('message', function(message) {
+                  assert.equal(message, 'test');
+                  serverSocket.sendMessage('test');
+              });
+          });
+          console.log(server.address().port);
+          JsonSocket.sendReceive({host: 'localhost', port: server.address().port, delimeter: "¡", message: "test"})
+              .then(function(message) {
+                  assert.equal(message, 'test')
+                  done();
+              })
+        });
+    });
+
+    it('should send and receive message sendReceive is object with custom delimeter via unixSocket', function (done) {
+      var server = net.createServer();
+      server.listen("tmp.sock");
+      server.on('listening', function() {
+          server.on('connection', function(socket) {
+              var serverSocket = new JsonSocket(socket, { delimeter: "¡"});
+              serverSocket.on('message', function(message) {
+                  assert.equal(message, 'test');
+                  serverSocket.sendMessage('test');
+              });
+          });
+          console.log(server.address().port);
+          JsonSocket.sendReceive({ unixSocket: "tmp.sock", delimeter: "¡", message: "test"})
+              .then(function(message) {
+                  assert.equal(message, 'test')
+                  done();
+              })
+        });
+    });
 
 });
