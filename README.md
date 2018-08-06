@@ -1,6 +1,6 @@
 # JsonSocket [![Build Status](https://travis-ci.org/foi/node-json-socket.svg?branch=master)](https://travis-ci.org/foi/node-json-socket)
 
-Developed by @sebastianseilund but forked because unicode patch by @hpalz is not accepted. This repo includes unicode patch.
+Developed by @sebastianseilund but forked because unicode patch by @hpalz is not accepted. This repo includes unicode patch. Also added promised-sendReceive method.
 
 `JsonSocket` is a very easy way to send JSON over a socket using either TCP or UNIX sockets. `JsonSocket` uses a [decorator pattern](http://en.wikipedia.org/wiki/Decorator_pattern)
 to expose extra methods and events on instances of [`net.Socket`](http://nodejs.org/api/net.html#net_class_net_socket).
